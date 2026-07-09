@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daghat Game | Precision Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.stat-box {
+    background: #34495e;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+#game-area {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #ecf0f1;
+    border-radius: 15px;
+    cursor: crosshair;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+.target {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background
+let score = 0;
+let timeLeft = 30;
+let timerInterval;
+let gameActive = false;
+
+const scoreElement = document.getElementById('score');
+const timerElement = document.getElementById('timer');
+const gameArea = document.getElementById('game-area');
+const startScreen = document.getElementById('start-screen');
+const gameOverScreen = document.getElementById('game-over');
+const finalScoreElement = document.getElementById('final-score');
+const startBtn = document.getElementById('start-btn');
+const restartBtn = document.getElementById('restart-btn');
+
+// شروع بازی
+function startGame() {
+    score = 0;
+    timeLeft = 30;
+    gameActive = true;
+    scoreElement.innerText = score;
+    timerElement.innerText = timeLeft;
+    
+    startScreen.classList.add('hidden');
+    gameOverScreen.classList.add('hidden');
+    
+    // پاک کردن هدف‌های قبلی
+    const existingTargets = document.querySelectorAll('.target');
+    existingTargets.forEach(t => t.remove());
+
+    // شروع تایمر
+    timerInterval = setInterval(updateTimer, 1000);
+    
+    // ایجاد اولین هدف
+    spawnTarget();
+}
+
+// ایجاد هدف در موقعیت تصادفی
+function spawnTarget() {
+    if (!gameActive) return;
+
+    const target = document.createElement('div');
+    target.classList.add('target');
+
+    // محاسبه موقعیت تصادفی در محدوده game-area
+    const maxX = gameArea.clientWidth - 50;
+    const maxY = gameArea.clientHeight - 50;
+    
+    const randomX = Math.floor(Math.random() * maxX) + 25;
+    const randomY = Math.floor(Math.random() * maxY) + 25;
+
+    target.style.left = `${randomX}px`;
+    target.style.top = `${randomY}px`;
+
+    // رویداد کلیک روی هدف
+    target.addEventListener('mousedown', () => {
+        score++;
+        scoreElement.innerText = score;
+        target.remove();
+        spawnTarget(); // ایجاد هدف جدید بلافاصله بعد از کلیک
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daghat Game | Precision Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Daghat Game</h1>
+        
+        <div class="stats">
+            <div class="stat-box">Score: <span id="score">0</span></div>
+            <div class="stat-box">Time: <span id="timer">30</span>s</div>
+        </div>
+
+        <div id="game-area">
+            <div id="start-screen">
+                <button id="start-btn">Start Game</button>
+            </div>
+            <div id="game-over" class="hidden">
+                <h2>Game Over!</h2>
+                <p>Your Final Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- فایل‌های صوتی -->
+    <audio id="click-sound" src="click.wav"></audio> <!-- نام فایل صدا را تغییر دهید -->
+    <audio id="game-over-sound" src="gameover.wav"></audio> <!-- نام فایل صدا را تغییر دهید -->
+    <audio id="background-music" src="background.mp3" loop></audio> <!-- نام فایل موسیقی را تغییر دهید -->
+
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2c3e50; /* Dark blue-grey */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.3); /* کمی شفافیت برای کانتینر */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h1 {
+    color: #1abc9c; /* Turquoise */
+    margin-bottom: 20px;
+    font-size: 2.8rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    font-size: 1.6rem;
+}
+
+.stat-box {
+    background: #34495e; /* Darker blue-grey */
+    padding: 12px 25px;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
+    min-width: 120px; /* عرض کمتر تا بهتر چیده شوند */
+}
+
+#game-area {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: #ecf0f1; /* Light grey */
+    border-radius: 15px;
+    cursor: crosshair;
+    overflow: hidden;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.target {
+    position: absolute;
+    width: 50px; /* اندازه اولیه هدف */
+    height: 50px;
+    background-color: #e74c3c; /* Red */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+    transition: transform 0.08s ease-out, box-shadow 0.1s ease; /* انیمیشن نرم‌تر */
+    cursor: pointer;
+}
+
+.target:active {
+    transform: translate(-50%, -50%) scale(0.7); /* هدف کوچک‌تر می‌شود */
+    box-shadow: 0 0 25px rgba(231, 76, 60, 1);
+}
+
+#start-screen, #game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 62, 80, 0.9); /* پس‌زمینه تیره برای صفحات */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px; /* مطابق با game-area */
+}
+
+#game-over h2 {
+    color: #f39c12; /* Orange */
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+#game-over p {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+}
+
+#game-over p span {
+    font-weight: bold;
+    color: #f1c40f; /* Yellow */
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    background-color: #27ae60; /* Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #2ecc71; /* Lighter green */
+    transform: translateY(-2px);
+}
+
+button:active {
+    background-color: #27ae60;
+    transform: translateY(0);
+}
+
+.hidden {
+    display: none;
+}
+
+/* برای نمایش بهتر متن فارسی در صورت نیاز (مثلا عنوان بازی) */
+html[lang="fa"] body .game-container h1 {
+    font-family: 'Tahoma', sans-serif; /* فونت فارسی */
+}
+
+
+// --- تنظیمات اولیه بازی ---
+let score = 0;
+let timeLeft = 30;
+let timerInterval;
+let gameActive = false;
+let targetSpeedMultiplier = 1; // ضریب سرعت هدف‌ها
+let baseTargetSize = 50; // اندازه پایه هدف
+
+// --- المان‌های DOM ---
+const scoreElement = document.getElementById('score');
+const timerElement = document.getElementById('timer');
+const gameArea = document.getElementById('game-area');
+const startScreen = document.getElementById('start-screen');
+const gameOverScreen = document.getElementById('game-over');
+const finalScoreElement = document.getElementById('final-score');
+const startBtn = document.getElementById('start-btn');
+const restartBtn = document.getElementById('restart-btn');
+
+// --- المان‌های صوتی ---
+const clickSound = document.getElementById('click-sound');
+const gameOverSound = document.getElementById('game-over-sound');
+const backgroundMusic = document.getElementById('background-music');
+
+// --- تابع پخش صدا (با مدیریت خطا) ---
+function playSound(audioElement) {
+    if (!audioElement) return; // اگر المان صدا وجود نداشت، خارج شو
+    audioElement.currentTime = 0; // بازگرداندن به ابتدای فایل صوتی
+    audioElement.play().catch(error => {
+        console.warn("Failed to play sound:", error);
+        // در مرورگرهای جدید، پخش خودکار صدا ممکن است محدود شود.
+        // اگر صدا پخش نشد، ممکن است لازم باشد کاربر اولین تعامل را انجام دهد.
+    });
+}
+
+// --- تابع پخش موسیقی پس‌زمینه ---
+function playBackgroundMusic() {
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(error => {
+             console.warn("Background music failed to play. User interaction might be needed.", error);
+        });
+    }
+}
+
+// --- شروع بازی ---
+function startGame() {
+    score = 0;
+    timeLeft = 30;
+    targetSpeedMultiplier = 1; // ریست کردن ضریب سرعت
+    baseTargetSize = 50; // ریست کردن اندازه هدف
+    
+    gameActive = true;
+    scoreElement.innerText = score;
+    timerElement.innerText = timeLeft;
+    
+    startScreen.classList.add('hidden');
+    gameOverScreen.classList.add('hidden');
+    
+    // پاک کردن هدف‌های قبلی
+    const existingTargets = document.querySelectorAll('.target');
+    existingTargets.forEach(t => t.remove());
+
+    // شروع موسیقی پس‌زمینه
+    playBackgroundMusic();
+    
+    // شروع تایمر
+    timerInterval = setInterval(updateTimer, 1000);
+    
+    // ایجاد اولین هدف
+    spawnTarget();
+}
+
+// --- ایجاد هدف ---
+function spawnTarget() {
+    if (!gameActive) return;
+
+    const target = document.createElement('div');
+    target.classList.add('target');
+
+    // محاسبه اندازه هدف بر اساس امتیاز (هر 10 امتیاز، 2 پیکسل کوچکتر)
+    const currentTargetSize = Math.max(20, baseTargetSize - Math.floor(score / 10) * 2); // حداقل اندازه 20 پیکسل
+    target.style.width = `${currentTargetSize}px`;
+    target.style.height = `${currentTargetSize}px`;
+    
+    // محاسبه موقعیت تصادفی در محدوده game-area
+    // باید از ابعاد واقعی game-area استفاده کنیم
+    const gameAreaWidth = gameArea.clientWidth;
+    const gameAreaHeight = gameArea.clientHeight;
+    
+    // اطمینان از اینکه هدف کاملاً درون محدوده قرار می‌گیرد
+    const maxX = gameAreaWidth - currentTargetSize;
+    const maxY = gameAreaHeight - currentTargetSize;
+    
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    target.style.left = `${randomX}px`;
+    target.style.top = `${randomY}px`;
+
+    // رویداد کلیک روی هدف
+    target.addEventListener('mousedown', (event) => {
+        if (!gameActive) return;
+        event.stopPropagation(); // جلوگیری از فعال شدن رویداد کلیک game-area
+
+        playSound(clickSound); // پخش صدای کلیک
+        
+        score++;
+        scoreElement.innerText = score;
+        
+        // حذف هدف کلیک شده
+        target.remove();
+
+        // افزایش ضریب سرعت هدف‌ها با افزایش امتیاز
+        if (score % 10 === 0) { // هر 10 امتیاز، سرعت کمی بیشتر می‌شود
+            targetSpeedMultiplier += 0.1; 
+        }
+
+        // ایجاد هدف جدید
+        spawnTarget();
+    });
+
+    gameArea.appendChild(target);
+}
+
+// --- به‌روزرسانی تایمر ---
+function updateTimer() {
+    timeLeft--;
+    timerElement.innerText = timeLeft;
+
+    if (timeLeft <= 0) {
+        endGame();
+    }
+}
+
+// --- پایان بازی ---
+function endGame() {
+    gameActive = false;
+    clearInterval(timerInterval);
+    finalScoreElement.innerText = score;
+    gameOverScreen.classList.remove('hidden');
+    
+    // حذف تمام هدف‌های موجود در صفحه
+    const targets = document.querySelectorAll('.target');
+    targets.forEach(t => t.remove());
+
+    // پخش صدای Game Over و توقف موسیقی پس‌زمینه
+    playSound(gameOverSound);
+    if (backgroundMusic) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0; // بازگرداندن به ابتدا برای پخش مجدد
+    }
+}
+
+// --- گوش دادن به دکمه‌ها ---
+startBtn.addEventListener('click', () => {
+    startGame();
+});
+restartBtn.addEventListener('click', () => {
+    startGame();
+});
+
+// --- شروع بازی اولیه با کلیک روی دکمه "Start Game" ---
+// این تضمین می‌کند که صداها در مرورگرهای سخت‌گیر پخش شوند
+startBtn.addEventListener('click', () => {
+    startGame();
+});
+
+// مدیریت پخش صداها در صورت نیاز به تعامل کاربر
+document.addEventListener('click', function initializeAudio() {
+    // یک بار صدا را پخش کن تا مجوز پخش صدا فعال شود
+    if (backgroundMusic) {
+        backgroundMusic.play().catch(() => {
+            console.log('Audio playback requires user interaction.');
+        });
+        // حذف event listener پس از اولین کلیک موفق
+        document.removeEventListener('click', initializeAudio);
+    }
+}, { once: true }); // {once: true} یعنی این listener فقط یک بار اجرا می‌شود
